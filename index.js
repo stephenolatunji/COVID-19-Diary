@@ -65,6 +65,17 @@ app.post('/', parser.array('image'), async(req, res) => {
         }
 });
 
+app.get('/', async(req, res) =>{
+    try{
+
+        const diary = await Diary.find().lean();
+        res.json(diary)
+    }
+    catch(err){
+        res.status(500).send({Success: false, Error: err})
+    }
+});
+
 app.get('/:_id', async(req, res)=> {
     try{
 
