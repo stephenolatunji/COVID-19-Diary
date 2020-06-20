@@ -30,6 +30,8 @@ const parser = multer({storage: storage});
 // Initialize mongoose schema
 const Schema = mongoose.Schema;
 const diarySchema = Schema({
+    name: {type: String, trim: true},
+    fact: {type: String, trim: true},
     text: {
         type: String,
         trim: true,
