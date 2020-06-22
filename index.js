@@ -4,13 +4,14 @@ const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
 const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary');
 const {CloudinaryStorage} = require('multer-storage-cloudinary');
 
 
 // Initialize middleware
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
