@@ -48,10 +48,10 @@ const Diary = mongoose.model('Diary', diarySchema);
 
 
 
-app.post('/', parser.single('image'), async(req, res) => {
-    const image = {};
+app.post('/uploader', parser.array('image'), async(req, res) => {
+    const image = [];
             image.url = req.file.url;
-            image.id = req.file.public_id;
+            image.push(image.url)
         const {text, fact, name } = req.body;
 
         try{
@@ -59,7 +59,7 @@ app.post('/', parser.single('image'), async(req, res) => {
                 name,
                 fact,
                 text,
-                image: image1.url,
+                image
               
             })
             await diary.save();
@@ -69,7 +69,7 @@ app.post('/', parser.single('image'), async(req, res) => {
         }
 });
 
-app.get('/', async(req, res) =>{
+app.get('/uploader', async(req, res) =>{
     try{
 
         const diary = await Diary.find().lean();
