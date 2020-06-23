@@ -53,11 +53,14 @@ const Diary = mongoose.model('Diary', diarySchema);
 
 app.post('/uploader', parser.array('image'), async(req, res) => {
 
-    const image = [];
-            image.url = req.files.path;
-            image.push(image.url)
+    let image = [];
 
         const {text, fact, name } = req.body;
+
+        for (let i = 0; i < req.files.length; i++) {
+            image.push(req.files[i].path);
+        }
+          
         try{
             const diary = new Diary({
                 name,
@@ -70,18 +73,9 @@ app.post('/uploader', parser.array('image'), async(req, res) => {
         }
         catch(err){
             res.status(500).send({Success: false, Error: err})
-        }
+        }     
+        
 });
-
-app.post('/test', (req,res)=>{
-    var form = new fm.IncomingForm();
-
-    form.parse(req, (err, fields, files)=>{
-        console.log(req.body);
-        console.log(fields.body);
-        console.log(files);
-    })
-})
 
 app.get('/uploader', async(req, res) =>{
     try{
