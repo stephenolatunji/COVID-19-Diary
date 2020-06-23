@@ -70,6 +70,7 @@ app.post('/uploader', parser.array('image'), async(req, res) => {
             })
             console.log(diary)
             diary.save();
+            res.json(diary)
         }
         catch(err){
             res.status(500).send({Success: false, Error: err})
