@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
 const multer = require('multer');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 const {CloudinaryStorage} = require('multer-storage-cloudinary');
 
 
@@ -23,7 +23,7 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     folder: "COVID-19",
     allowedFormats: ["jpg", "png", "jpeg"],
-    transformation: [{width: 400, height: 400, crop: "limit"}]
+    transformation: [{width: 300, height: 300, crop: "limit"}]
 });
 
 const parser = multer({storage: storage});
