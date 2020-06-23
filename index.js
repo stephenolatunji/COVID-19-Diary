@@ -88,7 +88,7 @@ app.get('/uploader', async(req, res) =>{
     }
 });
 
-app.get('/:_id', async(req, res)=> {
+app.get('/uploader/:_id', async(req, res)=> {
     try{
 
         const diary = await Diary.find(req.params._id).lean();
