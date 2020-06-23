@@ -73,6 +73,16 @@ app.post('/uploader', parser.array('image'), async(req, res) => {
         }
 });
 
+app.post('/test', (req,res)=>{
+    var form = new fm.IncomingForm();
+
+    form.parse(req, (err, fields, files)=>{
+        console.log(req.body);
+        console.log(fields.body);
+        console.log(files);
+    })
+})
+
 app.get('/uploader', async(req, res) =>{
     try{
 
