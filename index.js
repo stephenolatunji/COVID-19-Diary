@@ -23,7 +23,7 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     folder: "COVID-19",
     allowedFormats: ["jpg", "png", "jpeg"],
-    transformation: [{width: 300, height: 300, crop: "limit"}]
+    transformation: [{width: 400, height: 600, crop: "limit"}]
 });
 
 const parser = multer({storage: storage});
