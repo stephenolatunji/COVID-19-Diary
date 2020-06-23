@@ -36,7 +36,6 @@ const diarySchema = Schema({
     text: {
         type: String,
         trim: true,
-        required: true
     },
     image:[
         {
