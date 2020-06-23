@@ -38,7 +38,11 @@ const diarySchema = Schema({
         trim: true,
         required: true
     },
-    image: {type: String}
+    image:[
+        {
+            type: String
+        }
+    ]
 },{
     timestamps: true
 }
@@ -47,10 +51,11 @@ const diarySchema = Schema({
 const Diary = mongoose.model('Diary', diarySchema);
 
 
-app.post('/uploader', parser.single('image'), async(req, res) => {
-    const image = {};
-            image.url = req.file.path;
-            // image.push(image.url) 
+app.post('/uploader', parser.array('image'), async(req, res) => {
+
+    const image = [];
+            image.url = req.files.path;
+            image.push(image.url)
 
         const {text, fact, name } = req.body;
         try{
@@ -58,7 +63,7 @@ app.post('/uploader', parser.single('image'), async(req, res) => {
                 name,
                 fact,
                 text,
-                image: image.url
+                image: image
             })
             console.log(diary)
             diary.save();
