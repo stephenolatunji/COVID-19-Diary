@@ -68,7 +68,6 @@ app.post('/uploader', parser.array('image'), async(req, res) => {
                 text,
                 image: image
             })
-            console.log(diary)
             diary.save();
             res.json(diary)
         }
