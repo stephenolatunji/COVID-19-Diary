@@ -51,8 +51,7 @@ const Diary = mongoose.model('Diary', diarySchema);
 
 
 app.post('/uploader', parser.array('image'), async(req, res) => {
-    console.log(req.body);
-    console.log(req.files);
+
     let image = [];
 
         const {text, fact, name } = req.body;
