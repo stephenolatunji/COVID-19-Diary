@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
 const multer = require('multer');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 const {CloudinaryStorage} = require('multer-storage-cloudinary');
 
 
@@ -47,22 +47,21 @@ const diarySchema = Schema({
 const Diary = mongoose.model('Diary', diarySchema);
 
 
+app.post('/uploader', parser.single('image'), async(req, res) => {
+    const image = {};
+            image.url = req.file.path;
+            // image.push(image.url) 
 
-app.post('/uploader', parser.array('image'), async(req, res) => {
-    const image = [];
-            image.url = req.file.url;
-            image.push(image.url)
         const {text, fact, name } = req.body;
-
         try{
             const diary = new Diary({
                 name,
                 fact,
                 text,
-                image
-              
+                image: image.url
             })
-            await diary.save();
+            console.log(diary)
+            diary.save();
         }
         catch(err){
             res.status(500).send({Success: false, Error: err})
