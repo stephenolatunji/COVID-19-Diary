@@ -33,6 +33,7 @@ const Schema = mongoose.Schema;
 const diarySchema = Schema({
     name: {type: String, trim: true},
     fact: {type: String, trim: true},
+    month: {type: String},
     text: {
         type: String,
         trim: true,
@@ -54,7 +55,7 @@ app.post('/uploader', parser.array('image'), async(req, res) => {
 
     let image = [];
 
-        const {text, fact, name } = req.body;
+        const {text, fact, name, month } = req.body;
 
         for (let i = 0; i < req.files.length; i++) {
             image.push(req.files[i].path);
@@ -64,6 +65,7 @@ app.post('/uploader', parser.array('image'), async(req, res) => {
             const diary = new Diary({
                 name,
                 fact,
+                month,
                 text,
                 image: image
             })
