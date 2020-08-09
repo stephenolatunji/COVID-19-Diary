@@ -3,85 +3,80 @@ require('dotenv').config()
 const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const {CloudinaryStorage} = require('multer-storage-cloudinary');
+// const multer = require('multer');
+// const cloudinary = require('cloudinary').v2;
+// const {CloudinaryStorage} = require('multer-storage-cloudinary');
 
 
 // Initialize middleware
 app.use(cors());
 app.use(express.json());
 
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_NAME,
+//     api_key: process.env.CLOUDINARY_KEY,
+//     api_secret: process.env.CLOUDINARY_SECRET
+// });
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET
-});
+// const storage = new CloudinaryStorage({
+//     cloudinary: cloudinary,
+//     folder: "COVID-19",
+//     allowedFormats: ["jpg", "png", "jpeg"],
+//     transformation: [{width: 400, height: 600, crop: "limit"}]
+// });
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    folder: "COVID-19",
-    allowedFormats: ["jpg", "png", "jpeg"],
-    transformation: [{width: 400, height: 600, crop: "limit"}]
-});
-
-const parser = multer({storage: storage});
+// const parser = multer({storage: storage});
 
 // Initialize mongoose schema
 const Schema = mongoose.Schema;
-const diarySchema = Schema({
-    name: {type: String, trim: true},
-    fact: {type: String, trim: true},
-    month: {type: String},
-    text: {
-        type: String,
-        trim: true,
-    },
-    image:[
-        {
-            type: String
-        }
-    ]
-},{
-    timestamps: true
-}
-);
 
+const diarySchema = new Schema({
+    name: {type: String},
+    location: {type: String},
+    role: {type: String},
+    moment: {type: String},
+    wow: {type: String},
+    caption: { type: String },
+}
+// ,{
+//     timestamps: true
+// }
+);
 const Diary = mongoose.model('Diary', diarySchema);
 
 
-app.post('/uploader', parser.array('image'), async(req, res) => {
+app.post('/uploader', async(req, res) => {
 
-    let image = [];
+    // let image = [];
+        const { name, location, role, moment, wow, caption } = req.body;
+        
 
-        const {text, fact, name, month } = req.body;
-
-        for (let i = 0; i < req.files.length; i++) {
-            image.push(req.files[i].path);
-        }
-          
+        // for (let i = 0; i < req.files.length; i++) {
+        //     image.push(req.files[i].path);
+        // }
         try{
             const diary = new Diary({
                 name,
-                fact,
-                month,
-                text,
-                image: image
-            })
-            diary.save();
-            res.json(diary)
+                location,
+                role,
+                moment,
+                wow,
+                caption
+            });
+            await diary.save();
+            res.json(diary);
         }
         catch(err){
-            res.status(500).send({Success: false, Error: err})
-        }     
-        
+            res.status(500).send({
+                Success: false, 
+                Error: err
+            })
+        }      
 });
-
 app.get('/uploader', async(req, res) =>{
     try{
 
-        const diary = await Diary.find().lean();
+        const diary = await Diary.find();
         res.json(diary)
     }
     catch(err){
@@ -99,7 +94,6 @@ app.get('/uploader/:_id', async(req, res)=> {
         res.status(500).send({Success: false, Error: err})
     }
 });
-
 
 
 
